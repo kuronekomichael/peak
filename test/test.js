@@ -384,6 +384,15 @@ describe('theme', function () {
           .should.eq('<div>bar</div>');
       })
 
+      it('should use block as context\'s posts including PostType or block:{PostType}', function () {
+        var compiler = new ThemeCompiler('<!-- #(Posts) --><!-- #(Text) --><div>text</div><!-- ## --><!-- #(Chat) --><div>chat</div><!-- ## --><!-- #(Photo) --><div>photo</div><!-- ## --><!-- ## -->', { with: 'html' });
+        compiler.compile()({ 'block:Posts': [
+            {'block:Photo': true, 'PostType': 'photo'},
+            {'PostType': 'text'}
+          ]})
+          .should.eq('<div>photo</div><div>text</div>');
+      })
+
     })
 
     describe('url', function () {
